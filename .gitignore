@@ -1,0 +1,12 @@
+
+# things to ignore
+
+# pycache folder
+/__pycache__
+
+# libraries
+graphics.py
+
+# vim swap files
+*.swp
+
