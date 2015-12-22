@@ -10,3 +10,5 @@ graphics.py
 # vim swap files
 *.swp
 
+# random secret santa script I made
+secretsanta.py

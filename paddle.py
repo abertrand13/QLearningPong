@@ -17,11 +17,20 @@ class Paddle(pygame.sprite.Sprite):
 
 		self.speed = inspeed;
 
+		# ----------------------
+		# Q LEARNING SHENANIGANS
+		# ----------------------
+
+
+
 	def update(self):
+		""" MANUAL CONTROL
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_UP]:
 			self.rect.move_ip(0, -self.speed)
 		elif keys[pygame.K_DOWN]:
 			self.rect.move_ip(0, self.speed)
+		"""
+		
 
 
