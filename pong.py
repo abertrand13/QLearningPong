@@ -83,9 +83,10 @@ def setupEpisode(paddle, ball, wall):
 
 def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 	# main event loop
-	while 1:
+	dead = False;
+	while not dead:
 		# make us not hog the CPU.  arg is fps
-		clock.tick(30)
+		clock.tick(120)
 		
 		# exit if we quit	
 		for event in pygame.event.get():
@@ -110,10 +111,14 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 			# collision with right wall
 			ball.dx *= -1
 
+		paddle.ballLeft = ball.rect.x < paddle.rect.x
+		paddle.ballMoveLeft = ball.dx < 0
+		paddle.ballMoveUp = ball.dy < 0
+	
 		if (ball.rect.x <= 0):
 			# got past paddle
 			# run new episode
-			return
+			dead = True;
 
 		# update all sprites
 		objects.update()
