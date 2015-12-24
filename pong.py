@@ -113,7 +113,8 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 
 		paddle.ballLeft = ball.rect.x < paddle.rect.x
 		paddle.ballMoveLeft = ball.dx < 0
-		paddle.ballMoveUp = ball.dy < 0
+		# paddle.ballMoveUp = ball.dy < 0
+		paddle.ballMoveUp = ball.rect.y > paddle.rect.y
 	
 		if (ball.rect.x <= 0):
 			# got past paddle
