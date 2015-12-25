@@ -111,7 +111,8 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 			# collision with right wall
 			ball.dx *= -1
 
-		paddle.ballLeft = ball.rect.x < paddle.rect.x
+		# paddle.ballLeft = ball.rect.x < paddle.rect.x
+		paddle.ballLeft = ballRect.x < paddle.rect.x
 		paddle.ballMoveLeft = ball.dx < 0
 		# paddle.ballMoveUp = ball.dy < 0
 		paddle.ballMoveUp = ball.rect.y > paddle.rect.y
@@ -128,6 +129,5 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 		screen.blit(bg, (0,0)) # don't know why this is here either	
 		objects.draw(screen)
 		pygame.display.flip() # contents of double buffer
-	
 
 main()

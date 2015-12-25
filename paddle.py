@@ -44,6 +44,9 @@ class Paddle(pygame.sprite.Sprite):
 		self.ballMoveUp = False
 
 	def getRewardIndex(self):
+		if (self.ballLeft and self.oldState > 3):
+			print("here")
+		
 		# get the index of the Q matrix to reference based on state variables	
 		return (not self.ballLeft * 4) + (not self.ballMoveLeft * 2) + (not self.ballMoveUp * 1)
 
@@ -57,6 +60,7 @@ class Paddle(pygame.sprite.Sprite):
 				self.gamma * self.getMaxEstimate() - \
 				self.Q[self.oldAction][self.oldState])
 		self.Q[self.oldAction][self.getRewardIndex()] = newVal
+		# self.Q[self.oldAction][self.oldState] = newVal
 
 
 	def update(self):
