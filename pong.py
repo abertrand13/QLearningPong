@@ -84,9 +84,9 @@ def setupEpisode(paddle, ball, wall):
 def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 	# main event loop
 	dead = False;
-	while not dead:
+	while not dead: # lol.
 		# make us not hog the CPU.  arg is fps
-		clock.tick(120)
+		clock.tick(200)
 		
 		# exit if we quit	
 		for event in pygame.event.get():
@@ -115,8 +115,11 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 		paddle.ballLeft = ball.rect.x < paddle.rect.x
 		# paddle.ballLeft = ballRect.x < paddle.rect.x
 		paddle.ballMoveLeft = ball.dx < 0
-		# paddle.ballMoveUp = ball.dy < 0
-		paddle.ballMoveUp = ball.rect.y > paddle.rect.y # need to change to 'ballAbove'
+		# paddle.ballAbove = ball.dy < 0
+		paddle.ballAbove = ball.rect.y > paddle.rect.y # need to change to 'ballAbove'
+
+		# given the new state variables, update Q matrix	
+		paddle.updateQMatrix()
 	
 		if (ball.rect.x <= 0):
 			# got past paddle
@@ -124,6 +127,7 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 			dead = True;
 
 		# update all sprites
+		# for the paddle, this equates to taking an action to move to the next state
 		objects.update()
 
 		# update display

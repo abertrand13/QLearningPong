@@ -27,11 +27,12 @@ class Paddle(pygame.sprite.Sprite):
 		# Reward matrix
 		# L/R, T/A, U/D
 		# move up, move down
-		self.reward = [[-100, -100, -100, -100, 0, 0, 0, 0],
-				  [-100, -100, -100, -100, 0, 0, 0, 0]]
+		# penalize less for trying to do the right thing?
+		self.reward =	[[-75, -100, -75, -100, 0, 0, 0, 0],
+				  	   	[-100, -75, -100, -75, 0, 0, 0, 0]]
 
-		self.Q = [[0, 0, 0, 0, 0, 0, 0, 0],
-			 [0, 0, 0, 0, 0, 0, 0, 0]]
+		self.Q = 	[[0, 0, 0, 0, 0, 0, 0, 0],
+			 		[0, 0, 0, 0, 0, 0, 0, 0]]
 
 		self.gamma = .8 # discount value
 		self.alpha = .7 # learning rate
@@ -41,14 +42,14 @@ class Paddle(pygame.sprite.Sprite):
 		
 		self.ballLeft = False
 		self.ballMoveLeft = False
-		self.ballMoveUp = False
+		self.ballAbove = False
 
 	def getRewardIndex(self):
 		# get the index of the Q matrix to reference based on state variables
 		# parentheses are important
 		return ((not self.ballLeft) * 4) + \
 				((not self.ballMoveLeft) * 2) + \
-				((not self.ballMoveUp) * 1)
+				((not self.ballAbove) * 1)
 
 	def getMaxEstimate(self):
 		# the max Q for our current state
@@ -57,10 +58,10 @@ class Paddle(pygame.sprite.Sprite):
 	def updateQMatrix(self):
 		newVal = self.Q[self.oldAction][self.oldState] + \
 				self.alpha * \
-				(self.reward[self.oldAction][self.getRewardIndex()] + \
+				(self.reward[self.oldAction][self.oldState] + \
 				self.gamma * self.getMaxEstimate() - \
 				self.Q[self.oldAction][self.oldState])
-		self.Q[self.oldAction][self.getRewardIndex()] = newVal
+		self.Q[self.oldAction][self.oldState] = newVal
 		# self.Q[self.oldAction][self.oldState] = newVal
 
 
@@ -78,7 +79,7 @@ class Paddle(pygame.sprite.Sprite):
 
 		# update Q matrix
 		# do this before our next action so it's like we're updating for the action we just took
-		self.updateQMatrix()
+		# self.updateQMatrix()
 
 		# movement logic
 		if self.Q[MOVE_UP][self.getRewardIndex()] > self.Q[MOVE_DOWN][self.getRewardIndex()]:
