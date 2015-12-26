@@ -111,11 +111,12 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 			# collision with right wall
 			ball.dx *= -1
 
-		# paddle.ballLeft = ball.rect.x < paddle.rect.x
-		paddle.ballLeft = ballRect.x < paddle.rect.x
+		# state variables for paddle
+		paddle.ballLeft = ball.rect.x < paddle.rect.x
+		# paddle.ballLeft = ballRect.x < paddle.rect.x
 		paddle.ballMoveLeft = ball.dx < 0
 		# paddle.ballMoveUp = ball.dy < 0
-		paddle.ballMoveUp = ball.rect.y > paddle.rect.y
+		paddle.ballMoveUp = ball.rect.y > paddle.rect.y # need to change to 'ballAbove'
 	
 		if (ball.rect.x <= 0):
 			# got past paddle

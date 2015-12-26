@@ -44,13 +44,14 @@ class Paddle(pygame.sprite.Sprite):
 		self.ballMoveUp = False
 
 	def getRewardIndex(self):
-		if (self.ballLeft and self.oldState > 3):
-			print("here")
-		
-		# get the index of the Q matrix to reference based on state variables	
-		return (not self.ballLeft * 4) + (not self.ballMoveLeft * 2) + (not self.ballMoveUp * 1)
+		# get the index of the Q matrix to reference based on state variables
+		# parentheses are important
+		return ((not self.ballLeft) * 4) + \
+				((not self.ballMoveLeft) * 2) + \
+				((not self.ballMoveUp) * 1)
 
 	def getMaxEstimate(self):
+		# the max Q for our current state
 		return max(self.Q[MOVE_UP][self.getRewardIndex()], self.Q[MOVE_DOWN][self.getRewardIndex()])
 
 	def updateQMatrix(self):
@@ -76,6 +77,7 @@ class Paddle(pygame.sprite.Sprite):
 			print(self.Q)
 
 		# update Q matrix
+		# do this before our next action so it's like we're updating for the action we just took
 		self.updateQMatrix()
 
 		# movement logic
@@ -83,7 +85,7 @@ class Paddle(pygame.sprite.Sprite):
 			# move up
 			self.rect.move_ip(0, -self.speed)
 			self.oldAction = MOVE_UP
-		else:
+		elif self.Q[MOVE_UP][self.getRewardIndex()] < self.Q[MOVE_DOWN][self.getRewardIndex()]:
 			# move down
 			self.rect.move_ip(0, self.speed)
 			self.oldAction = MOVE_DOWN
