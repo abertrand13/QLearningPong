@@ -3,6 +3,7 @@ import pygame
 
 MOVE_UP = 0
 MOVE_DOWN = 1
+STAY = 2
 
 class Paddle(pygame.sprite.Sprite):
 
@@ -25,17 +26,22 @@ class Paddle(pygame.sprite.Sprite):
 		# ----------------------
 
 		# Reward matrix
-		# L/R, T/A, U/D
+		# >> Ball to the left/right of the paddle
+		# >> Ball moving left/right
+		# >> Ball above/below the paddle
 		# move up, move down
 		# penalize less for trying to do the right thing?
-		self.reward =	[[-75, -100, -75, -100, 0, 0, 0, 0],
-				  	   	[-100, -75, -100, -75, 0, 0, 0, 0]]
+		self.reward =	[[0, -100, 0, -100, 0, 0, 0, 0],
+				  	   	[-100, 0, -100, 0, 0, 0, 0, 0],
+						[-100, -100, -100, -100, 0, 0, 0, 0]]
 
 		self.Q = 	[[0, 0, 0, 0, 0, 0, 0, 0],
-			 		[0, 0, 0, 0, 0, 0, 0, 0]]
+			 		[0, 0, 0, 0, 0, 0, 0, 0],
+					[0, 0, 0, 0, 0, 0, 0, 0]]
 
+			
+		self.alpha = .5 # learning rate
 		self.gamma = .8 # discount value
-		self.alpha = .7 # learning rate
 		
 		self.oldAction = MOVE_DOWN # arbitrary
 		self.oldState = 0
@@ -90,5 +96,8 @@ class Paddle(pygame.sprite.Sprite):
 			# move down
 			self.rect.move_ip(0, self.speed)
 			self.oldAction = MOVE_DOWN
+		else
+			# stay still
+			self.oldAction = STAY
 		
 		self.oldState = self.getRewardIndex()
