@@ -31,8 +31,8 @@ class Paddle(pygame.sprite.Sprite):
 		# >> Ball above/below the paddle
 		# move up, move down
 		# penalize less for trying to do the right thing?
-		self.reward =	[[0, -100, 0, -100, 0, 0, 0, 0],
-				  	   	[-100, 0, -100, 0, 0, 0, 0, 0],
+		self.reward =	[[-100, -100, -100, -100, 0, 0, 0, 0],
+				  	   	[-100, -100, -100, -100, 0, 0, 0, 0],
 						[-100, -100, -100, -100, 0, 0, 0, 0]]
 
 		self.Q = 	[[0, 0, 0, 0, 0, 0, 0, 0],
@@ -59,7 +59,10 @@ class Paddle(pygame.sprite.Sprite):
 
 	def getMaxEstimate(self):
 		# the max Q for our current state
-		return max(self.Q[MOVE_UP][self.getRewardIndex()], self.Q[MOVE_DOWN][self.getRewardIndex()])
+		index = self.getRewardIndex()
+		return max(self.Q[MOVE_UP][index],
+					self.Q[MOVE_DOWN][index],
+					self.Q[STAY][index])
 
 	def updateQMatrix(self):
 		newVal = self.Q[self.oldAction][self.oldState] + \
@@ -88,7 +91,21 @@ class Paddle(pygame.sprite.Sprite):
 		# self.updateQMatrix()
 
 		# movement logic
-		if self.Q[MOVE_UP][self.getRewardIndex()] > self.Q[MOVE_DOWN][self.getRewardIndex()]:
+		best = self.getMaxEstimate() # reusing this function here
+
+		if best == self.Q[MOVE_UP][self.getRewardIndex()]:
+			# move up
+			self.rect.move_ip(0, -self.speed)
+			self.oldAction = MOVE_UP
+		elif best == self.Q[MOVE_DOWN][self.getRewardIndex()]:
+			# move down
+			self.rect.move_ip(0, self.speed)
+			self.oldAction = MOVE_DOWN
+		else:
+			# stay put
+			self.oldAction = STAY
+
+		"""if self.Q[MOVE_UP][self.getRewardIndex()] > self.Q[MOVE_DOWN][self.getRewardIndex()]:
 			# move up
 			self.rect.move_ip(0, -self.speed)
 			self.oldAction = MOVE_UP
@@ -98,6 +115,6 @@ class Paddle(pygame.sprite.Sprite):
 			self.oldAction = MOVE_DOWN
 		else
 			# stay still
-			self.oldAction = STAY
+			self.oldAction = STAY"""
 		
 		self.oldState = self.getRewardIndex()
