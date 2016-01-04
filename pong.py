@@ -19,7 +19,7 @@ P_SPEED = 5
 
 # ballz
 B_SIZE = 10
-B_SPEED = 10
+B_SPEED = 5
 
 # frame
 FRAME = 30
@@ -86,6 +86,7 @@ def runEpisode(screen, clock, bg, paddle, ball, wall, objects):
 	dead = False;
 	while not dead: # lol.
 		# make us not hog the CPU.  arg is fps
+		# seems like there's a max somewhere, so this is essentially saying we don't have a ceil
 		clock.tick(200)
 		
 		# exit if we quit	

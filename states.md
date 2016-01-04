@@ -14,6 +14,11 @@ This approach had a few issues, namely:
 
 Performance seemed to go up a touch (the paddle displayed some semblance of logic) by changing the 'ball moving up or down' state to 'ball above or below the paddle'.  Still left the issue of half the matrix not being used, though
 
+UPDATE: Issue fixed (implementation of algorithm was off)
+
+Adding a 'STAY PUT' action fixed the problem of skittering.
+The paddle does seem to go after the ball now, but it struggles with trying to follow the ball instead of 'anticipating' where it'll be.  Since the ball moves faster than the paddle, this is a problem
+
 
 Note: All this is based on the current implementation of the Q-learning algorithm.  It's probably wrong, so there's that...
 		
